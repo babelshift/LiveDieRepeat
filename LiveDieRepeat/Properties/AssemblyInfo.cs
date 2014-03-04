@@ -6,10 +6,10 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("LiveDieRepeat")]
-[assembly: AssemblyProduct("LiveDieRepeat")]
-[assembly: AssemblyConfiguration("")]
 [assembly: AssemblyDescription("")]
+[assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
+[assembly: AssemblyProduct("LiveDieRepeat")]
 [assembly: AssemblyCopyright("Copyright ©  2014")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -20,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("ac1987e3-5d6e-434a-8c3f-e4df3457ddf6")]
+[assembly: Guid("a6710dad-9fff-44e3-8411-5cfd98cb662d")]
 
 // Version information for an assembly consists of the following four values:
 //
