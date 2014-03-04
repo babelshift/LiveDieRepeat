@@ -1,0 +1,8 @@
+c:\users\justin\documents\visual studio 2012\Projects\CustomContent\ContentPipelineExtensionLibrary\bin\Debug\ContentPipelineExtensionLibrary.dll
+c:\users\justin\documents\visual studio 2012\Projects\CustomContent\ContentPipelineExtensionLibrary\bin\Debug\ContentPipelineExtensionLibrary.pdb
+c:\users\justin\documents\visual studio 2012\Projects\CustomContent\ContentPipelineExtensionLibrary\obj\Debug\ContentPipelineExtensionLibrary.dll
+c:\users\justin\documents\visual studio 2012\Projects\CustomContent\ContentPipelineExtensionLibrary\obj\Debug\ContentPipelineExtensionLibrary.pdb
+E:\Documents\Programming\GitHub\LiveDieRepeat\ContentPipelineExtensionLibrary\bin\Debug\ContentPipelineExtensionLibrary.dll
+E:\Documents\Programming\GitHub\LiveDieRepeat\ContentPipelineExtensionLibrary\bin\Debug\ContentPipelineExtensionLibrary.pdb
+E:\Documents\Programming\GitHub\LiveDieRepeat\ContentPipelineExtensionLibrary\obj\Debug\ContentPipelineExtensionLibrary.dll
+E:\Documents\Programming\GitHub\LiveDieRepeat\ContentPipelineExtensionLibrary\obj\Debug\ContentPipelineExtensionLibrary.pdb

@@ -1,0 +1,716 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{73BC2F40-4FBA-4D29-9FDE-1E5F0A2270F2}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>LiveDieRepeat</RootNamespace>
+    <AssemblyName>LiveDieRepeat</AssemblyName>
+    <FileAlignment>512</FileAlignment>
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
+    <PlatformTarget>x86</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\WindowsGL\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE;WINDOWS</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
+    <PlatformTarget>x86</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\WindowsGL\Release\</OutputPath>
+    <DefineConstants>TRACE;WINDOWS</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>Icon.ico</ApplicationIcon>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="Engine\BulletSystem\BulletMover.cs" />
+    <Compile Include="Engine\BulletSystem\BulletMoverManager.cs" />
+    <Compile Include="Engine\BulletSystem\BulletSystem.cs" />
+    <Compile Include="Engine\Camera.cs" />
+    <Compile Include="Engine\CollisionManager.cs" />
+    <Compile Include="Engine\EntityManager.cs" />
+    <Compile Include="Engine\ExplosionParticleSystem.cs" />
+    <Compile Include="Engine\Factory.cs" />
+    <Compile Include="Engine\GridManager.cs" />
+    <Compile Include="Engine\Map.cs" />
+    <Compile Include="Engine\MapCollection.cs" />
+    <Compile Include="Engine\MapEvent.cs" />
+    <Compile Include="Engine\MouseHelper.cs" />
+    <Compile Include="Engine\Particle.cs" />
+    <Compile Include="Engine\ParticleSystem.cs" />
+    <Compile Include="Engine\RectangleExtensions.cs" />
+    <Compile Include="Engine\Resolution.cs" />
+    <Compile Include="Engine\Sprite.cs" />
+    <Compile Include="Engine\SpriteSheet.cs" />
+    <Compile Include="Engine\UserInterfaceManager.cs" />
+    <Compile Include="Entities\BossBrain.cs" />
+    <Compile Include="Entities\EnemyBrain.cs" />
+    <Compile Include="Entities\EnemyEntity.cs" />
+    <Compile Include="Entities\EnemyEyeball.cs" />
+    <Compile Include="Entities\EnemyProjectileSimple.cs" />
+    <Compile Include="Entities\EnemySimple.cs" />
+    <Compile Include="Entities\EnemySimpleFast.cs" />
+    <Compile Include="Entities\Entity.cs" />
+    <Compile Include="Entities\EntityId.cs" />
+    <Compile Include="Entities\ExplosionEntity.cs" />
+    <Compile Include="Entities\ExplosionMedium.cs" />
+    <Compile Include="Entities\Fireball.cs" />
+    <Compile Include="Entities\Grenade.cs" />
+    <Compile Include="Entities\IEnemy.cs" />
+    <Compile Include="Entities\ItemEntity.cs" />
+    <Compile Include="Entities\MachineGunDoubleBullet.cs" />
+    <Compile Include="Entities\MachineGunSingleBullet.cs" />
+    <Compile Include="Entities\MachineGunTripleBullet.cs" />
+    <Compile Include="Entities\Mine.cs" />
+    <Compile Include="Entities\MoneyRed.cs" />
+    <Compile Include="Entities\Objects\ArrowDown.cs" />
+    <Compile Include="Entities\Objects\ArrowLeft.cs" />
+    <Compile Include="Entities\Objects\ArrowRight.cs" />
+    <Compile Include="Entities\Objects\ArrowUp.cs" />
+    <Compile Include="Entities\PlayerEntity.cs" />
+    <Compile Include="Entities\ProjectileEntity.cs" />
+    <Compile Include="Entities\Rocket.cs" />
+    <Compile Include="Entities\ShieldPickup.cs" />
+    <Compile Include="Entities\Spread.cs" />
+    <Compile Include="Entities\WallHugger.cs" />
+    <Compile Include="Entities\WeaponUpgradePickup.cs" />
+    <Compile Include="Items\FlameThrower.cs" />
+    <Compile Include="Items\FlameThrowerPickup.cs" />
+    <Compile Include="Items\GrenadeLauncher.cs" />
+    <Compile Include="Items\GrenadeLauncherPickup.cs" />
+    <Compile Include="Items\MachineGun.cs" />
+    <Compile Include="Items\MachineGunPickup.cs" />
+    <Compile Include="Items\MineLayer.cs" />
+    <Compile Include="Items\MineLayerPickup.cs" />
+    <Compile Include="Items\RocketLauncher.cs" />
+    <Compile Include="Items\RocketLauncherPickup.cs" />
+    <Compile Include="Items\SpreadGun.cs" />
+    <Compile Include="Items\SpreadGunPickup.cs" />
+    <Compile Include="Items\Weapon.cs" />
+    <Compile Include="MainGame.cs" />
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Screens\CompanyScreen.cs" />
+    <Compile Include="Screens\GameOver.cs" />
+    <Compile Include="Screens\InGame.cs" />
+    <Compile Include="Screens\IScreenFactory.cs" />
+    <Compile Include="Screens\LoadingScreen.cs" />
+    <Compile Include="Screens\MainMenu.cs" />
+    <Compile Include="Screens\MenuBackground.cs" />
+    <Compile Include="Screens\MenuScreen.cs" />
+    <Compile Include="Screens\OptionsMenu.cs" />
+    <Compile Include="Screens\PauseScreen.cs" />
+    <Compile Include="Screens\Screen.cs" />
+    <Compile Include="Screens\ScreenFactory.cs" />
+    <Compile Include="Screens\ScreenManager.cs" />
+    <Compile Include="Screens\TitleScreen.cs" />
+    <Compile Include="UserInterface\Bar.cs" />
+    <Compile Include="UserInterface\Checkbox.cs" />
+    <Compile Include="UserInterface\Control.cs" />
+    <Compile Include="UserInterface\DialogBox.cs" />
+    <Compile Include="UserInterface\HealthBar.cs" />
+    <Compile Include="UserInterface\Label.cs" />
+    <Compile Include="UserInterface\MenuButton.cs" />
+    <Compile Include="UserInterface\Minimap.cs" />
+    <Compile Include="UserInterface\PlayerStatusBar.cs" />
+    <Compile Include="UserInterface\Portrait.cs" />
+    <Compile Include="UserInterface\PowerBar.cs" />
+    <Compile Include="UserInterface\ShieldBar.cs" />
+    <Compile Include="UserInterface\Slot.cs" />
+    <Compile Include="UserInterface\Spinbox.cs" />
+    <Compile Include="UserInterface\WeaponSlot.cs" />
+    <Compile Include="UserInterface\WeaponSlotBar.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="BulletMLLib.Windows">
+      <HintPath>..\Libs\BulletMLLib.Windows.dll</HintPath>
+    </Reference>
+    <Reference Include="OpenTK">
+      <HintPath>$(MSBuildExtensionsPath)\..\MonoGame\v3.0\Assemblies\WindowsGL\OpenTK.dll</HintPath>
+    </Reference>
+    <Reference Include="MonoGame.Framework">
+      <HintPath>$(MSBuildExtensionsPath)\..\MonoGame\v3.0\Assemblies\WindowsGL\MonoGame.Framework.dll</HintPath>
+    </Reference>
+    <Reference Include="Lidgren.Network">
+      <HintPath>$(MSBuildExtensionsPath)\..\MonoGame\v3.0\Assemblies\WindowsGL\Lidgren.Network.dll</HintPath>
+    </Reference>
+    <Reference Include="Tao.Sdl">
+      <HintPath>$(MSBuildExtensionsPath)\..\MonoGame\v3.0\Assemblies\WindowsGL\Tao.Sdl.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="..\Libs\SDL.dll">
+      <Link>SDL.dll</Link>
+    </Content>
+    <Content Include="Content\BulletPatterns\BackBurst.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\BulletPatterns\CircleFire.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\BulletPatterns\ColonyShapeSatellite.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\BulletPatterns\ExplodeShot.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\BulletPatterns\Eyeball.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\BulletPatterns\FastRocket.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\BulletPatterns\Fast_3Way.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\BulletPatterns\GrowBullets.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\BulletPatterns\HomingLaser.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\BulletPatterns\ParabolaShot.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\BulletPatterns\RocketLine.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\BulletPatterns\SprayShot.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\BulletPatterns\Struggling.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\BulletPatterns\SwirlShot.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\BulletPatterns\WaveyBullets.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\BulletPatterns\Winder.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Icon.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\ContentPipelineExtensionLibrary\ContentPipelineExtensionLibrary.csproj">
+      <Project>{b5d48171-ebfc-4f2c-b04a-4ca57118147b}</Project>
+      <Name>ContentPipelineExtensionLibrary</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include=".NETFramework,Version=v4.0">
+      <Visible>False</Visible>
+      <ProductName>Microsoft .NET Framework 4 %28x86 and x64%29</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Windows.Installer.4.5">
+      <Visible>False</Visible>
+      <ProductName>Windows Installer 4.5</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Content\Backgrounds\Background_Menu_Pattern3.xnb">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Backgrounds\Background_Menu_Stripes.xnb">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Entities\BulletOrangeCircle.xnb">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Entities\Enemy1.xnb">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Entities\Enemy2.xnb">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Entities\EnemyBrain.xnb">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Entities\EnemyEyeball.xnb">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Entities\ExplosionMedium.xnb">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Entities\Fireball.xnb">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Entities\Grenade.xnb">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Entities\MachineGunDoubleBullet.xnb">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Entities\MachineGunEnemyBullet.xnb">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Entities\MachineGunSingleBullet.xnb">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Entities\MachineGunTripleBullet.xnb">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Entities\Mine.xnb">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Entities\MoneyRed.xnb">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Entities\Objects\ArrowDown.xnb">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Entities\Objects\ArrowLeft.xnb">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Entities\Objects\ArrowRight.xnb">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Entities\Objects\ArrowUp.xnb">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Entities\Player.xnb">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Entities\Rocket.xnb">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Entities\ShieldPickup.xnb">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Entities\Spread.xnb">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Entities\WallHugger1.xnb">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Entities\WeaponUpgradePickup.xnb">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Fonts\Multiplier.xnb">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Fonts\Points.xnb">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Fonts\ResagokrBold16.xnb">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Fonts\ResagokrBold18.xnb">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Fonts\ResagokrBold22.xnb">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Item\FlameThrower.xnb">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Item\FlameThrowerPickup.xnb">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Item\GrenadeLauncher.xnb">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Item\GrenadeLauncherPickup.xnb">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Item\MachineGun.xnb">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Item\MachineGunPickup.xnb">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Item\MineLayer.xnb">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Item\MineLayerPickup.xnb">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Item\RocketLauncher.xnb">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Item\RocketLauncherPickup.xnb">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Item\SpreadGun.xnb">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Item\SpreadGunPickup.xnb">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Item\Weapon_Ranged_Enemy_Simple.xnb">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\L1.xnb">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\L1_obj.xnb">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Levels\L1.xnb">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Levels\L1A1_Large.xnb">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Levels\L1A2_Large.xnb">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Levels\L1A3_Large.xnb">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Sprites\Enemy\Bosses\BrainSheet.xnb">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Sprites\Enemy\Bosses\BrainSheetData.xnb">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Sprites\Enemy\Bosses\EyeballSheet.xnb">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Sprites\Enemy\Bosses\EyeballSheetData.xnb">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Sprites\Enemy\Enemy1Sheet.xnb">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Sprites\Enemy\Enemy1SheetData.xnb">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Sprites\Enemy\Enemy2Sheet.xnb">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Sprites\Enemy\Enemy2SheetData.xnb">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Sprites\Enemy\WallHugger1Sheet.xnb">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Sprites\Enemy\WallHugger1SheetData.xnb">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Sprites\Objects\ArrowsLeftRightSheet.xnb">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Sprites\Objects\ArrowsLeftRightSheetData.xnb">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Sprites\Objects\ArrowsUpDownSheet.xnb">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Sprites\Objects\ArrowsUpDownSheetData.xnb">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Sprites\Objects\ExplosionMediumSheet.xnb">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Sprites\Objects\ExplosionMediumSheetData.xnb">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Sprites\Objects\Explosion_Huge.xnb">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Sprites\Objects\Explosion_Tiny.xnb">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Sprites\Objects\Explosion_Tiny_Blue.xnb">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Sprites\Pickups\WeaponPickupSheet.xnb">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Sprites\Pickups\WeaponPickupSheetData.xnb">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Sprites\Player\ShieldSheet.xnb">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Sprites\Player\ShieldSheetData.xnb">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Sprites\Player\WalkingSheet.xnb">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Sprites\Player\WalkingSheetData.xnb">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Sprites\Power\MoneySheet.xnb">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Sprites\Power\MoneySheetData.xnb">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Sprites\Power\ShieldPickupSheet.xnb">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Sprites\Power\ShieldPickupSheetData.xnb">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Sprites\Power\WeaponUpgradePickupSheet.xnb">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Sprites\Power\WeaponUpgradePickupSheetData.xnb">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Sprites\Projectile\BulletOrangeCircleSheet.xnb">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Sprites\Projectile\BulletOrangeCircleSheetData.xnb">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Sprites\Projectile\FireballSheet.xnb">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Sprites\Projectile\FireballSheetData.xnb">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Sprites\Projectile\GrenadeSheet.xnb">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Sprites\Projectile\GrenadeSheetData.xnb">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Sprites\Projectile\MachineGunDoubleBulletSheet.xnb">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Sprites\Projectile\MachineGunDoubleBulletSheetData.xnb">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Sprites\Projectile\MachineGunSingleBulletSheet.xnb">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Sprites\Projectile\MachineGunSingleBulletSheetData.xnb">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Sprites\Projectile\MachineGunTripleBulletSheet.xnb">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Sprites\Projectile\MachineGunTripleBulletSheetData.xnb">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Sprites\Projectile\MineSheet.xnb">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Sprites\Projectile\MineSheetData.xnb">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Sprites\Projectile\RocketSheet.xnb">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Sprites\Projectile\RocketSheetData.xnb">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Sprites\Projectile\SpreadSheet.xnb">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Sprites\Projectile\SpreadSheetData.xnb">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\User Interface\blank.xnb">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\User Interface\BoundingBoxPixel.xnb">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\User Interface\ChainsOfAcadia2.xnb">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\User Interface\ChainsOfAcadia3.xnb">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\User Interface\Controls\BarExperience.xnb">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\User Interface\Controls\BarHealth.xnb">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\User Interface\Controls\BarHpMpXp.xnb">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\User Interface\Controls\BarShield.xnb">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\User Interface\Controls\ButtonExtraLargeDefault.xnb">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\User Interface\Controls\ButtonExtraLargeDisabled.xnb">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\User Interface\Controls\ButtonExtraLargeHover.xnb">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\User Interface\Controls\ButtonExtraLargeSelected.xnb">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\User Interface\Controls\ButtonLargeDefault.xnb">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\User Interface\Controls\ButtonLargeDisabled.xnb">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\User Interface\Controls\ButtonLargeHover.xnb">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\User Interface\Controls\ButtonLargeSelected.xnb">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\User Interface\Controls\ButtonLeftDefault.xnb">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\User Interface\Controls\ButtonLeftDisabled.xnb">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\User Interface\Controls\ButtonLeftHovered.xnb">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\User Interface\Controls\ButtonLeftSelected.xnb">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\User Interface\Controls\ButtonRightDefault.xnb">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\User Interface\Controls\ButtonRightDisabled.xnb">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\User Interface\Controls\ButtonRightHovered.xnb">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\User Interface\Controls\ButtonRightSelected.xnb">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\User Interface\Controls\CheckboxChecked.xnb">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\User Interface\Controls\CheckboxDefault.xnb">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\User Interface\Controls\DialogBox.xnb">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\User Interface\Controls\GameOverMenuTryAgainButton.xnb">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\User Interface\Controls\MainMenuExitButton.xnb">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\User Interface\Controls\MainMenuOptionsButton.xnb">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\User Interface\Controls\MainMenuStartButton.xnb">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\User Interface\Controls\OptionsMenuApplyButton.xnb">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\User Interface\Controls\OptionsMenuMainMenuButton.xnb">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\User Interface\Controls\PauseMenuBackground.xnb">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\User Interface\Controls\PauseMenuMainMenuButton.xnb">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\User Interface\Controls\PauseMenuOptionsButton.xnb">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\User Interface\Controls\PauseMenuResumeButton.xnb">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\User Interface\Controls\Portrait.xnb">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\User Interface\Controls\SlotSmall.xnb">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\User Interface\Controls\SlotSmallSelected.xnb">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\User Interface\Controls\TitleScreenAnyKeyButton.xnb">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\User Interface\GameOver.xnb">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\User Interface\Portraits\FemaleSteampunk01.xnb">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\User Interface\Portraits\Male01.xnb">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\User Interface\Portraits\Male02.xnb">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\User Interface\Portraits\MaleScientist01.xnb">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\User Interface\Portraits\Robot01.xnb">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Content\Fonts\menufont.xnb" />
+    <None Include="Content\Levels\L1A1.xnb" />
+    <None Include="Content\Levels\L1A2.xnb" />
+    <None Include="Content\Levels\L1A3.xnb" />
+    <None Include="Content\Levels\L1A4.xnb" />
+    <None Include="Content\Sprites\Tiles\L1.xnb" />
+    <None Include="Content\Sprites\Tiles\L1_obj.xnb" />
+    <None Include="Content\Sprites\Tiles\TileSet1.xnb" />
+    <None Include="Content\TileSet1.xnb" />
+    <None Include="Content\User Interface\Controls\Male01.xnb" />
+    <None Include="Content\User Interface\Header_Main_Left.xnb" />
+    <None Include="Content\User Interface\Header_Main_Right.xnb" />
+    <None Include="Content\User Interface\Menu_Main_Logo.xnb" />
+    <None Include="Content\User Interface\Portraits\Panel.xnb" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
