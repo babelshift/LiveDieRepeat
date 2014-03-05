@@ -1,0 +1,5 @@
+﻿{ 
+	"textures": [
+		{ "key": "ButtonSplash", "value": "Images/ButtonSplash.png" }
+	]
+}
