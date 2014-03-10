@@ -1,5 +1,8 @@
 ﻿{ 
 	"textures": [
-		{ "key": "ButtonSplash", "value": "Images/ButtonSplash.png" }
+		{ "key": "ButtonSplash", "value": "Images/ButtonSplash.png" },
+		{ "key": "IconLogo", "value": "Images/Logo.png" },
+		{ "key": "SplashBackgroundTile", "value": "Images/SplashBackgroundTile.png" },
+		{ "key": "ButtonSplashHover", "value": "Images/ButtonSplashHover.png" }
 	]
 }

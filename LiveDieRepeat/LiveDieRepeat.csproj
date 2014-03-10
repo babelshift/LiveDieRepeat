@@ -80,12 +80,22 @@
     <Compile Include="UserInterface\Control.cs" />
     <Compile Include="UserInterface\ControlFactory.cs" />
     <Compile Include="UserInterface\Icon.cs" />
+    <Compile Include="UserInterface\IInputtable.cs" />
     <Compile Include="UserInterface\Label.cs" />
     <Compile Include="UserInterface\Menu.cs" />
     <Compile Include="UserInterface\Styles.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\Images\ButtonSplash.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Images\ButtonSplashHover.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Images\Logo.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Images\SplashBackgroundTile.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <None Include="App.config" />

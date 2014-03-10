@@ -6,7 +6,7 @@ using System;
 
 namespace LiveDieRepeat.UserInterface
 {
-	public abstract class Control : IDisposable
+	public abstract class Control : IInputtable, IDisposable
 	{
 		public bool IsFocused { get; private set; }
 
@@ -75,17 +75,14 @@ namespace LiveDieRepeat.UserInterface
 
 		public abstract void Draw(GameTime gameTime, Renderer renderer);
 
+		#region Input Events
+
 		public virtual void HandleMouseMovingEvent(object sender, MouseMotionEventArgs e)
 		{
 			if (Visible)
 			{
 				IsHovered = GetHovered(e.RelativeToWindowX, e.RelativeToWindowY);
 			}
-		}
-
-		private bool GetHovered(int x, int y)
-		{
-			return Bounds.Contains(new Vector(x, y));
 		}
 
 		public virtual void HandleMouseButtonPressedEvent(object sender, MouseButtonEventArgs e)
@@ -109,19 +106,28 @@ namespace LiveDieRepeat.UserInterface
 			}
 		}
 
-		public virtual void HandleTextInput(string text)
+		public virtual void HandleTextInputtingEvent(object sender, TextInputEventArgs e)
 		{
 			if (Visible)
 			{
 			}
 		}
 
-		public virtual void HandleKeyPressed(KeyInformation key)
+		public virtual void HandleKeyPressedEvent(object sender, KeyboardEventArgs e)
 		{
 			if (Visible)
 			{
 			}
 		}
+
+		public virtual void HandleKeyReleasedEvent(object sender, KeyboardEventArgs e)
+		{
+			if (Visible)
+			{
+			}
+		}
+
+		#endregion Input Events
 
 		public virtual void Focus()
 		{
@@ -160,6 +166,11 @@ namespace LiveDieRepeat.UserInterface
 			{
 				OnReleased(EventArgs.Empty);
 			}
+		}
+
+		private bool GetHovered(int x, int y)
+		{
+			return Bounds.Contains(new Vector(x, y));
 		}
 
 		private void OnReleased(EventArgs e)

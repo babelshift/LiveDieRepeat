@@ -1,7 +1,7 @@
-﻿using SharpDL;
+﻿using LiveDieRepeat.UserInterface;
+using SharpDL;
 using SharpDL.Events;
 using SharpDL.Graphics;
-using SharpDL.Input;
 using System.Collections.Generic;
 
 namespace LiveDieRepeat.Screens
@@ -12,7 +12,7 @@ namespace LiveDieRepeat.Screens
 	/// methods at the appropriate times, and automatically routes input to the
 	/// topmost active screen.
 	/// </summary>
-	public class ScreenManager
+	public class ScreenManager : IInputtable
 	{
 		#region Fields
 
@@ -169,9 +169,40 @@ namespace LiveDieRepeat.Screens
 
 		#endregion Update and Draw
 
-		#region Public Methods
+		#region Input Event Passing
 
-		public void PassTextInputEventToActiveScreen(object sender, TextInputEventArgs e)
+		/// <summary>
+		/// Key pressed event arguments passed to the active popup or screen
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
+		public virtual void HandleKeyPressedEvent(object sender, KeyboardEventArgs e)
+		{
+			if (IsActivePopupAvailable)
+				ActivePopup.HandleKeyPressedEvent(sender, e);
+			else if (IsActiveScreenAvailable)
+				ActiveScreen.HandleKeyPressedEvent(sender, e);
+		}
+
+		/// <summary>
+		/// Key released event arguments passsed to the active popup or screen
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
+		public virtual void HandleKeyReleasedEvent(object sender, KeyboardEventArgs e)
+		{
+			if (IsActivePopupAvailable)
+				ActivePopup.HandleKeyReleasedEvent(sender, e);
+			else if (IsActiveScreenAvailable)
+				ActiveScreen.HandleKeyReleasedEvent(sender, e);
+		}
+
+		/// <summary>
+		/// Text inputting (with IME support) event arguments passed to the active popup or screen
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
+		public virtual void HandleTextInputtingEvent(object sender, TextInputEventArgs e)
 		{
 			if (IsActivePopupAvailable)
 				ActivePopup.HandleTextInputtingEvent(sender, e);
@@ -179,7 +210,12 @@ namespace LiveDieRepeat.Screens
 				ActiveScreen.HandleTextInputtingEvent(sender, e);
 		}
 
-		public void PassMouseButtonReleasedEventToActiveScreen(object sender, MouseButtonEventArgs e)
+		/// <summary>
+		/// Mouse button released event arguments passed to the active popup or screen
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
+		public virtual void HandleMouseButtonReleasedEvent(object sender, MouseButtonEventArgs e)
 		{
 			if (IsActivePopupAvailable)
 				ActivePopup.HandleMouseButtonReleasedEvent(sender, e);
@@ -187,7 +223,12 @@ namespace LiveDieRepeat.Screens
 				ActiveScreen.HandleMouseButtonReleasedEvent(sender, e);
 		}
 
-		public void PassMouseButtonPressedEventToActiveScreen(object sender, MouseButtonEventArgs e)
+		/// <summary>
+		/// Mouse button pressed event arguments passed to the active popup or screen
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
+		public virtual void HandleMouseButtonPressedEvent(object sender, MouseButtonEventArgs e)
 		{
 			if (IsActivePopupAvailable)
 				ActivePopup.HandleMouseButtonPressedEvent(sender, e);
@@ -195,20 +236,17 @@ namespace LiveDieRepeat.Screens
 				ActiveScreen.HandleMouseButtonPressedEvent(sender, e);
 		}
 
-		public void PassMouseMovingEventToActiveScreen(object sender, MouseMotionEventArgs e)
+		/// <summary>
+		/// Mouse movement event arguments passed to the active popup or screen
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
+		public virtual void HandleMouseMovingEvent(object sender, MouseMotionEventArgs e)
 		{
 			if (IsActivePopupAvailable)
 				ActivePopup.HandleMouseMovingEvent(sender, e);
 			else if (IsActiveScreenAvailable)
 				ActiveScreen.HandleMouseMovingEvent(sender, e);
-		}
-
-		public void PassKeyStatesToActiveScreen(IEnumerable<KeyInformation> keysPressed, IEnumerable<KeyInformation> keysReleased)
-		{
-			if (IsActivePopupAvailable)
-				ActivePopup.HandleKeyStates(keysPressed, keysReleased);
-			else if (IsActiveScreenAvailable)
-				ActiveScreen.HandleKeyStates(keysPressed, keysReleased);
 		}
 
 		/// <summary>
@@ -227,6 +265,10 @@ namespace LiveDieRepeat.Screens
 
 			screens.Add(screen);
 		}
+
+		#endregion Input Event Passing
+
+		#region Public Methods
 
 		/// <summary>
 		/// Removes a screen from the screen manager. You should normally

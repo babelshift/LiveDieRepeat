@@ -3,7 +3,6 @@ using LiveDieRepeat.UserInterface;
 using SharpDL;
 using SharpDL.Events;
 using SharpDL.Graphics;
-using SharpDL.Input;
 using System;
 using System.Collections.Generic;
 
@@ -16,7 +15,7 @@ namespace LiveDieRepeat.Screens
 	/// want to quit" message box, and the main game itself are all implemented
 	/// as screens.
 	/// </summary>
-	public abstract class Screen : IDisposable
+	public abstract class Screen : IInputtable, IDisposable
 	{
 		private TimeSpan transitionOnTime = TimeSpan.Zero;
 		private TimeSpan transitionOffTime = TimeSpan.Zero;
@@ -240,8 +239,14 @@ namespace LiveDieRepeat.Screens
 			return true;
 		}
 
+		#region Input Events
+
 		public virtual void HandleTextInputtingEvent(object sender, TextInputEventArgs e)
 		{
+			foreach (var control in controls)
+			{
+				control.HandleTextInputtingEvent(sender, e);
+			}
 		}
 
 		public virtual void HandleMouseButtonReleasedEvent(object sender, MouseButtonEventArgs e)
@@ -268,9 +273,23 @@ namespace LiveDieRepeat.Screens
 			}
 		}
 
-		public virtual void HandleKeyStates(IEnumerable<KeyInformation> keysPressed, IEnumerable<KeyInformation> keysReleased)
+		public virtual void HandleKeyPressedEvent(object sender, KeyboardEventArgs e)
 		{
+			foreach (var control in controls)
+			{
+				control.HandleKeyPressedEvent(sender, e);
+			}
 		}
+
+		public virtual void HandleKeyReleasedEvent(object sender, KeyboardEventArgs e)
+		{
+			foreach (var control in controls)
+			{
+				control.HandleKeyReleasedEvent(sender, e);
+			}
+		}
+
+		#endregion Input Events
 
 		/// <summary>
 		/// Allows the screen to handle user input. Unlike Update, this method

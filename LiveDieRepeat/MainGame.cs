@@ -34,13 +34,19 @@ namespace LiveDieRepeat
 			WindowLeave += (sender, e) => isMouseInsideWindowBounds = false;
 			WindowFocusLost += (sender, e) => isWindowFocused = false;
 			WindowFocusGained += (sender, e) => isWindowFocused = true;
+			TextInputting += (sender, e) => screenManager.HandleTextInputtingEvent(sender, e);
+			MouseButtonReleased += (sender, e) => screenManager.HandleMouseButtonReleasedEvent(sender, e);
+			MouseButtonPressed += (sender, e) => screenManager.HandleMouseButtonPressedEvent(sender, e);
+			MouseMoving += (sender, e) => screenManager.HandleMouseMovingEvent(sender, e);
+			KeyPressed += (sender, e) => screenManager.HandleKeyPressedEvent(sender, e);
+			KeyReleased += (sender, e) => screenManager.HandleKeyReleasedEvent(sender, e);
 		}
 
 		protected override void Initialize()
 		{
 			base.Initialize();
 
-			CreateWindow("Live.Die.Repeat.", 100, 100, SCREEN_WIDTH_LOGICAL, SCREEN_HEIGHT_LOGICAL, WindowFlags.Shown);// | WindowFlags.GrabbedInputFocus);
+			CreateWindow("Live. Die. Repeat.", 100, 100, SCREEN_WIDTH_LOGICAL, SCREEN_HEIGHT_LOGICAL, WindowFlags.Shown);// | WindowFlags.GrabbedInputFocus);
 			CreateRenderer(RendererFlags.RendererAccelerated | RendererFlags.RendererPresentVSync | RendererFlags.SupportRenderTargets);
 			Renderer.SetRenderLogicalSize(SCREEN_WIDTH_LOGICAL, SCREEN_HEIGHT_LOGICAL);
 			
@@ -91,6 +97,7 @@ namespace LiveDieRepeat
 		private SplashMenuScreen CreateSplashMenuScreen()
 		{
 			SplashMenuScreen splashMenuScreen = new SplashMenuScreen(contentManager);
+			splashMenuScreen.QuitClicked += (sender, e) => Quit();
 			return splashMenuScreen;
 		}
 
