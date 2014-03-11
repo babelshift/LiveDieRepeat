@@ -98,13 +98,27 @@ namespace LiveDieRepeat
 		{
 			SplashMenuScreen splashMenuScreen = new SplashMenuScreen(contentManager);
 			splashMenuScreen.QuitClicked += (sender, e) => Quit();
+			splashMenuScreen.StartClicked += (sender, e) => LoadGameScreen();
 			return splashMenuScreen;
+		}
+
+		private GameScreen CreateGameScreen()
+		{
+			GameScreen gameScreen = new GameScreen(contentManager);
+			return gameScreen;
 		}
 
 		private void LoadSplashMenuScreen()
 		{
 			CurrentGameState = GameState.Splash;
 			Screen screen = CreateSplashMenuScreen();
+			LoadScreen(screen);
+		}
+
+		private void LoadGameScreen()
+		{
+			CurrentGameState = GameState.InGame;
+			Screen screen = CreateGameScreen();
 			LoadScreen(screen);
 		}
 	}

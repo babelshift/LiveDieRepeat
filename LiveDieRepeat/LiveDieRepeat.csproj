@@ -68,9 +68,9 @@
     <Compile Include="MainGame.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Screens\DeathScreen.cs" />
     <Compile Include="Screens\GameScreen.cs" />
     <Compile Include="Screens\LoadingScreen.cs" />
-    <Compile Include="Screens\MainMenuScreen.cs" />
     <Compile Include="Screens\Screen.cs" />
     <Compile Include="Screens\ScreenFactory.cs" />
     <Compile Include="Screens\ScreenManager.cs" />
@@ -90,6 +90,15 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\Images\ButtonSplashHover.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Images\InGameBoard.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Images\InGameMetricLeft.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Images\InGameMetricRight.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\Images\Logo.png">

@@ -344,7 +344,9 @@ namespace LiveDieRepeat.Screens
 		private void Dispose(bool disposing)
 		{
 			foreach (var control in controls)
+			{
 				control.Dispose();
+			}
 		}
 	}
 }

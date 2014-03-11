@@ -3,6 +3,9 @@
 		{ "key": "ButtonSplash", "value": "Images/ButtonSplash.png" },
 		{ "key": "IconLogo", "value": "Images/Logo.png" },
 		{ "key": "SplashBackgroundTile", "value": "Images/SplashBackgroundTile.png" },
-		{ "key": "ButtonSplashHover", "value": "Images/ButtonSplashHover.png" }
+		{ "key": "ButtonSplashHover", "value": "Images/ButtonSplashHover.png" },
+		{ "key": "InGameBoard", "value": "Images/InGameBoard.png" },
+		{ "key": "InGameMetricRight", "value": "Images/InGameMetricRight.png" },
+		{ "key": "InGameMetricLeft", "value": "Images/InGameMetricLeft.png" }
 	]
 }
