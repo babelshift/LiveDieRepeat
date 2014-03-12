@@ -29,6 +29,9 @@ namespace LiveDieRepeat.Screens
 		private Label bestScoreLabel;
 		private Label bestScoreValue;
 
+		private Icon iconPlayer;
+		private Icon centerRing;
+
 		public GameScreen(ContentManager contentManager)
 			: base(contentManager)
 		{
@@ -56,6 +59,12 @@ namespace LiveDieRepeat.Screens
 			scoreValue = ControlFactory.CreateLabel(ContentManager, Styles.Fonts.Anton, 28, Styles.Colors.White, "0000");
 			scoreValue.Position = metricScore.Position + new Vector(metricScore.Width - scoreValue.Width - 10, 4);
 
+			centerRing = ControlFactory.CreateIcon(ContentManager, "CenterRing");
+			centerRing.Position = new Vector(MainGame.SCREEN_WIDTH_LOGICAL / 2 - centerRing.Width / 2, MainGame.SCREEN_HEIGHT_LOGICAL / 2 - centerRing.Height / 2);
+
+			iconPlayer = ControlFactory.CreateIcon(ContentManager, "Player");
+			iconPlayer.Position = new Vector(MainGame.SCREEN_WIDTH_LOGICAL / 2, MainGame.SCREEN_HEIGHT_LOGICAL / 2);
+
 			textureBackgroundTile = ContentManager.GetTexture("SplashBackgroundTile");
 
 			Controls.Add(gameBoard);
@@ -65,17 +74,20 @@ namespace LiveDieRepeat.Screens
 			Controls.Add(timeLabel);
 			Controls.Add(scoreLabel);
 			Controls.Add(scoreValue);
+			Controls.Add(centerRing);
 		}
 
 		public override void Update(GameTime gameTime, bool otherWindowHasFocus, bool coveredByOtherScreen)
 		{
 			base.Update(gameTime, otherWindowHasFocus, coveredByOtherScreen);
 
-			AdjustTileOffset();
+			//AdjustTileOffset();
 
 			this.gameTime = this.gameTime.Add(gameTime.ElapsedGameTime);
 
 			timeValue.Text = String.Format("{0:00}.{1:00}", (int)this.gameTime.TotalSeconds, this.gameTime.Milliseconds);
+
+			angle += 5f;
 		}
 
 		public override void Draw(GameTime gameTime, Renderer renderer)
@@ -84,8 +96,13 @@ namespace LiveDieRepeat.Screens
 				for (int y = -1; y <= MainGame.SCREEN_HEIGHT_LOGICAL / textureBackgroundTile.Height; y++)
 					textureBackgroundTile.Draw((x + tileOffset) * textureBackgroundTile.Width, (y + tileOffset) * textureBackgroundTile.Height);
 
+			
 			base.Draw(gameTime, renderer);
+
+			iconPlayer.TextureFrame.Draw((int)iconPlayer.Position.X, (int)iconPlayer.Position.Y, angle, new Vector(0, 0));
 		}
+
+		float angle = 0;
 
 		private void AdjustTileOffset()
 		{

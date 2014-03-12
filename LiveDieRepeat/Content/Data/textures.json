@@ -6,6 +6,8 @@
 		{ "key": "ButtonSplashHover", "value": "Images/ButtonSplashHover.png" },
 		{ "key": "InGameBoard", "value": "Images/InGameBoard.png" },
 		{ "key": "InGameMetricRight", "value": "Images/InGameMetricRight.png" },
-		{ "key": "InGameMetricLeft", "value": "Images/InGameMetricLeft.png" }
+		{ "key": "InGameMetricLeft", "value": "Images/InGameMetricLeft.png" },
+		{ "key": "CenterRing", "value": "Images/CenterRing.png" },
+		{ "key": "Player", "value": "Images/Player.png" }
 	]
 }
