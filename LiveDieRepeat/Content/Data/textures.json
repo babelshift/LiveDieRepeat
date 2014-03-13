@@ -8,6 +8,8 @@
 		{ "key": "InGameMetricRight", "value": "Images/InGameMetricRight.png" },
 		{ "key": "InGameMetricLeft", "value": "Images/InGameMetricLeft.png" },
 		{ "key": "CenterRing", "value": "Images/CenterRing.png" },
-		{ "key": "Player", "value": "Images/Player.png" }
+		{ "key": "Player", "value": "Images/Player.png" },
+		{ "key": "Enemy", "value": "Images/Enemy.png" },
+		{ "key": "PlayerBullet", "value": "Images/PlayerBullet.png" }
 	]
 }

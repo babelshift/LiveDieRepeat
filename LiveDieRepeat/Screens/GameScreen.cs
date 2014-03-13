@@ -1,6 +1,7 @@
 ﻿using LiveDieRepeat.Content;
 using LiveDieRepeat.UserInterface;
 using SharpDL;
+using SharpDL.Events;
 using SharpDL.Graphics;
 using System;
 using System.Collections.Generic;
@@ -14,6 +15,9 @@ namespace LiveDieRepeat.Screens
 	{
 		float tileOffset = 0;
 		private TimeSpan gameTime;
+		float angle = 0;
+		Vector mousePosition = Vector.Zero;
+
 
 		private Icon gameBoard;
 		private Texture textureBackgroundTile;
@@ -31,6 +35,9 @@ namespace LiveDieRepeat.Screens
 
 		private Icon iconPlayer;
 		private Icon centerRing;
+
+		private List<Icon> enemies = new List<Icon>();
+		private List<Icon> bullets = new List<Icon>();
 
 		public GameScreen(ContentManager contentManager)
 			: base(contentManager)
@@ -81,14 +88,27 @@ namespace LiveDieRepeat.Screens
 		{
 			base.Update(gameTime, otherWindowHasFocus, coveredByOtherScreen);
 
-			//AdjustTileOffset();
-
 			this.gameTime = this.gameTime.Add(gameTime.ElapsedGameTime);
 
 			timeValue.Text = String.Format("{0:00}.{1:00}", (int)this.gameTime.TotalSeconds, this.gameTime.Milliseconds);
 
-			angle += 5f;
+			PointPlayerAtMouse();
+
+			foreach (var enemy in enemies)
+				enemy.Update(gameTime);
+
+			foreach (var bullet in bullets)
+				bullet.Update(gameTime);
+
+			int randomX = random.Next(0, 1200);
+			int randomY = random.Next(100, 700);
+			Vector randomPosition = new Vector(randomX, randomY);
+			Icon newEnemy = ControlFactory.CreateIcon(ContentManager, "Enemy");
+			newEnemy.Position = randomPosition;
+			enemies.Add(newEnemy);
 		}
+
+		private Random random = new Random();
 
 		public override void Draw(GameTime gameTime, Renderer renderer)
 		{
@@ -99,16 +119,36 @@ namespace LiveDieRepeat.Screens
 			
 			base.Draw(gameTime, renderer);
 
-			iconPlayer.TextureFrame.Draw((int)iconPlayer.Position.X, (int)iconPlayer.Position.Y, angle, new Vector(0, 0));
+			foreach (var enemy in enemies)
+				enemy.Draw(gameTime, renderer);
+
+			foreach (var bullet in bullets)
+				bullet.Draw(gameTime, renderer);
+
+			iconPlayer.TextureFrame.Draw((int)iconPlayer.Position.X, (int)iconPlayer.Position.Y, angle, Vector.Zero);
 		}
 
-		float angle = 0;
-
-		private void AdjustTileOffset()
+		public override void HandleMouseMovingEvent(object sender, MouseMotionEventArgs e)
 		{
-			tileOffset += .005f;
-			if (tileOffset >= 1)
-				tileOffset = 0;
+			base.HandleMouseMovingEvent(sender, e);
+
+			mousePosition = new Vector(e.RelativeToWindowX, e.RelativeToWindowY);
+		}
+
+		public override void HandleMouseButtonPressedEvent(object sender, MouseButtonEventArgs e)
+		{
+			base.HandleMouseButtonPressedEvent(sender, e);
+
+			Icon bullet = ControlFactory.CreateIcon(ContentManager, "PlayerBullet");
+			bullet.Position = new Vector(e.RelativeToWindowX, e.RelativeToWindowY);
+			bullets.Add(bullet);
+		}
+
+		private void PointPlayerAtMouse()
+		{
+			angle = (float)Math.Atan2((double)(mousePosition.Y - iconPlayer.Position.Y), (double)(mousePosition.X - iconPlayer.Position.X));
+			angle *= (float)(180 / Math.PI);
+			angle -= 45;
 		}
 
 		public override void Dispose()
