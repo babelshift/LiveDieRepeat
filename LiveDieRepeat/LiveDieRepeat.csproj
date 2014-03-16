@@ -35,6 +35,9 @@
     <StartupObject>LiveDieRepeat.Program</StartupObject>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="BulletMLLib.Windows">
+      <HintPath>..\Libs\BulletMLLib.Windows.dll</HintPath>
+    </Reference>
     <Reference Include="Newtonsoft.Json, Version=4.5.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Libs\Newtonsoft.Json.dll</HintPath>
@@ -65,6 +68,9 @@
   <ItemGroup>
     <Compile Include="Agent.cs" />
     <Compile Include="Bullet.cs" />
+    <Compile Include="BulletSystem\BulletMover.cs" />
+    <Compile Include="BulletSystem\BulletMoverManager.cs" />
+    <Compile Include="BulletSystem\MyBulletSystem.cs" />
     <Compile Include="CollisionManager.cs" />
     <Compile Include="Content\ContentManager.cs" />
     <Compile Include="Enemy.cs" />
@@ -73,6 +79,7 @@
     <Compile Include="ICollidable.cs" />
     <Compile Include="MainGame.cs" />
     <Compile Include="MathExtensions.cs" />
+    <Compile Include="Player.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Screens\DeathScreen.cs" />
@@ -93,6 +100,54 @@
     <Compile Include="UserInterface\Styles.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Content\BulletPatterns\BackBurst.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\BulletPatterns\CircleFire.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\BulletPatterns\ColonyShapeSatellite.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\BulletPatterns\ExplodeShot.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\BulletPatterns\Eyeball.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\BulletPatterns\FastRocket.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\BulletPatterns\Fast_3Way.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\BulletPatterns\GrowBullets.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\BulletPatterns\HomingLaser.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\BulletPatterns\ParabolaShot.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\BulletPatterns\RocketLine.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\BulletPatterns\SprayShot.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\BulletPatterns\Struggling.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\BulletPatterns\SwirlShot.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\BulletPatterns\WaveyBullets.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\BulletPatterns\Winder.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Content\Images\ButtonSplash.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

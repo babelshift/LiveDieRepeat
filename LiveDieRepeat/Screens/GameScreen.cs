@@ -1,4 +1,6 @@
-﻿using LiveDieRepeat.Content;
+﻿using BulletMLLib;
+using LiveDieRepeat.BulletSystem;
+using LiveDieRepeat.Content;
 using LiveDieRepeat.UserInterface;
 using SharpDL;
 using SharpDL.Events;
@@ -6,18 +8,22 @@ using SharpDL.Graphics;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace LiveDieRepeat.Screens
 {
 	public class GameScreen : Screen
 	{
-		float tileOffset = 0;
+		private int tileOffset = 0;
 		private TimeSpan gameTime;
-		float angle = 0;
-		Vector mousePosition = Vector.Zero;
-
+		private Vector mousePosition = Vector.Zero;
+		private int score = 0;
+		private Random random = new Random();
+		private TimeSpan timeSinceLastPlayerBullet = TimeSpan.MaxValue;
+		private TimeSpan timeBetweenPlayerBullets = TimeSpan.FromSeconds(0.1);
+		private bool isLeftMouseButtonDown = false;
+		private BulletMLParser parser;
+		private int bulletTimer = 0;
+		private BulletMover bulletMover;
 
 		private Icon gameBoard;
 		private Texture textureBackgroundTile;
@@ -33,7 +39,7 @@ namespace LiveDieRepeat.Screens
 		private Label bestScoreLabel;
 		private Label bestScoreValue;
 
-		private Icon iconPlayer;
+		private Player player;
 		private Icon centerRing;
 
 		private List<Enemy> enemies = new List<Enemy>();
@@ -69,8 +75,9 @@ namespace LiveDieRepeat.Screens
 			centerRing = ControlFactory.CreateIcon(ContentManager, "CenterRing");
 			centerRing.Position = new Vector(MainGame.SCREEN_WIDTH_LOGICAL / 2 - centerRing.Width / 2, MainGame.SCREEN_HEIGHT_LOGICAL / 2 - centerRing.Height / 2);
 
-			iconPlayer = ControlFactory.CreateIcon(ContentManager, "Player");
-			iconPlayer.Position = new Vector(MainGame.SCREEN_WIDTH_LOGICAL / 2, MainGame.SCREEN_HEIGHT_LOGICAL / 2);
+			Icon iconPlayer = ControlFactory.CreateIcon(ContentManager, "Player");
+			player = new Player(iconPlayer);
+			player.TeleportTo(new Vector(MainGame.SCREEN_WIDTH_LOGICAL / 2, MainGame.SCREEN_HEIGHT_LOGICAL / 2));
 
 			textureBackgroundTile = ContentManager.GetTexture("SplashBackgroundTile");
 
@@ -82,6 +89,14 @@ namespace LiveDieRepeat.Screens
 			Controls.Add(scoreLabel);
 			Controls.Add(scoreValue);
 			Controls.Add(centerRing);
+
+			parser = new BulletMLParser();
+			parser.ParseXML(String.Format(@"Content\BulletPatterns\{0}", "Struggling.xml"));
+			BulletMLManager.Init(new MyBulletSystem(player));
+			BulletMoverManager.Init(ContentManager);
+
+			Vector bulletPosition = new Vector(400, 400);
+			bulletMover = BulletMoverManager.CreateBulletMover(bulletPosition, parser.tree);
 		}
 
 		public override void Update(GameTime gameTime, bool otherWindowHasFocus, bool coveredByOtherScreen)
@@ -92,9 +107,7 @@ namespace LiveDieRepeat.Screens
 
 			timeValue.Text = String.Format("{0:00}.{1:00}", (int)this.gameTime.TotalSeconds, this.gameTime.Milliseconds);
 
-			iconPlayer.Update(gameTime);
-
-			PointPlayerAtMouse();
+			UpdatePlayer();
 
 			UpdateEnemies(gameTime);
 
@@ -102,93 +115,14 @@ namespace LiveDieRepeat.Screens
 
 			ShootPlayerBullet(gameTime);
 
-			CreateRandomEnemy();
+			//CreateRandomEnemy();
+
+			UpdateBullets(gameTime);
 
 			UpdateCollisions();
 
 			RemoveExpiredAgents();
 		}
-
-		private int score = 0;
-
-		private void RemoveExpiredAgents()
-		{
-			int deadEnemyCount = enemies.Count(e => e.IsDead);
-			score += deadEnemyCount;
-			scoreValue.Text = score.ToString("0000");
-			playerBullets.RemoveAll(pb => pb.IsDead);
-			enemies.RemoveAll(e => e.IsDead);
-		}
-
-		private void UpdateCollisions()
-		{
-			CollisionManager.HandleCollisions(enemies, playerBullets);
-		}
-
-		private void UpdatePlayerBullets(GameTime gameTime)
-		{
-			foreach (var playerBullet in playerBullets)
-				playerBullet.Update(gameTime);
-		}
-
-		private void UpdateEnemies(GameTime gameTime)
-		{
-			foreach (var enemy in enemies)
-				enemy.Update(gameTime);
-		}
-
-		private void ShootPlayerBullet(GameTime gameTime)
-		{
-			if (timeSinceLastPlayerBullet < TimeSpan.MaxValue)
-				timeSinceLastPlayerBullet += gameTime.ElapsedGameTime;
-
-			if (timeSinceLastPlayerBullet >= timeBetweenPlayerBullets)
-			{
-				if (isLeftMouseButtonDown)
-				{
-					Icon iconBullet = ControlFactory.CreateIcon(ContentManager, "PlayerBullet");
-					Bullet bullet = new Bullet(new Vector(700, 700), iconBullet);
-					bullet.TeleportTo(iconPlayer.Position);
-					bullet.RotateTo(angle + 45);
-					playerBullets.Add(bullet);
-
-					timeSinceLastPlayerBullet = TimeSpan.Zero;
-				}
-			}
-		}
-
-		private void CreateRandomEnemy()
-		{
-			int randomX = random.Next(0, 1200);
-			int randomY = random.Next(100, 700);
-			Vector randomPosition = new Vector(randomX, randomY);
-			Icon iconEnemy = ControlFactory.CreateIcon(ContentManager, "Enemy");
-			Enemy newEnemy = new Enemy(new Vector(400, 400), iconEnemy);
-			newEnemy.TeleportTo(randomPosition);
-			enemies.Add(newEnemy);
-		}
-
-		private void DisposeDeadBullets(List<Bullet> deadBullets)
-		{
-			foreach (var deadBullet in deadBullets)
-			{
-				playerBullets.RemoveAll(pb => pb.ID == deadBullet.ID);
-				deadBullet.Dispose();
-			}
-		}
-
-		private static void MarkDeadBullets(List<Bullet> deadBullets, Bullet playerBullet)
-		{
-			if (playerBullet.Position.Y <= 59)
-			{
-				playerBullet.Die();
-				deadBullets.Add(playerBullet);
-			}
-		}
-
-		private TimeSpan timeSinceLastPlayerBullet = TimeSpan.MaxValue;
-		private TimeSpan timeBetweenPlayerBullets = TimeSpan.FromSeconds(0.1);
-		private Random random = new Random();
 
 		public override void Draw(GameTime gameTime, Renderer renderer)
 		{
@@ -201,10 +135,13 @@ namespace LiveDieRepeat.Screens
 			foreach (var enemy in enemies)
 				enemy.Draw(gameTime, renderer);
 
-			iconPlayer.TextureFrame.Draw((int)iconPlayer.Position.X, (int)iconPlayer.Position.Y, angle, Vector.Zero);
+			player.Draw(gameTime, renderer);
 
 			foreach (var playerBullet in playerBullets)
 				playerBullet.Draw(gameTime, renderer);
+
+			foreach (var bulletMover in BulletMoverManager.BulletMovers)
+				bulletMover.Draw(gameTime, renderer);
 		}
 
 		public override void HandleMouseMovingEvent(object sender, MouseMotionEventArgs e)
@@ -230,13 +167,112 @@ namespace LiveDieRepeat.Screens
 				isLeftMouseButtonDown = false;
 		}
 
-		private bool isLeftMouseButtonDown = false;
-
-		private void PointPlayerAtMouse()
+		public void ShootPlayerBullet(GameTime gameTime)
 		{
-			angle = (float)Math.Atan2((double)(mousePosition.Y - iconPlayer.Position.Y), (double)(mousePosition.X - iconPlayer.Position.X));
-			angle *= (float)(180 / Math.PI);
+			if (timeSinceLastPlayerBullet < TimeSpan.MaxValue)
+				timeSinceLastPlayerBullet += gameTime.ElapsedGameTime;
+
+			if (timeSinceLastPlayerBullet >= timeBetweenPlayerBullets)
+			{
+				if (isLeftMouseButtonDown)
+				{
+					Bullet bullet = player.FireWeapon(ContentManager);
+					playerBullets.Add(bullet);
+
+					timeSinceLastPlayerBullet = TimeSpan.Zero;
+				}
+			}
+		}
+
+		private void UpdateScore(int points)
+		{
+			score += points;
+			scoreValue.Text = score.ToString("0000");
+		}
+
+		private void RemoveExpiredAgents()
+		{
+			int deadEnemyCount = enemies.Count(e => e.IsDead);
+			UpdateScore(deadEnemyCount);
+			playerBullets.RemoveAll(pb => pb.IsDead);
+			enemies.RemoveAll(e => e.IsDead);
+		}
+
+		private void UpdateCollisions()
+		{
+			CollisionManager.HandleCollisions(enemies, playerBullets);
+		}
+
+		private void UpdatePlayerBullets(GameTime gameTime)
+		{
+			foreach (var playerBullet in playerBullets)
+				playerBullet.Update(gameTime);
+		}
+
+		private void UpdateEnemies(GameTime gameTime)
+		{
+			foreach (var enemy in enemies)
+				enemy.Update(gameTime);
+
+		}
+
+		private void UpdateBullets(GameTime gameTime)
+		{
+			bulletTimer++;
+			if (bulletTimer > 60)
+			{
+				bulletTimer = 0;
+				bulletMover.IsUsed = false;
+
+				if (bulletMover.IsUsed == false)
+				{
+					Vector bulletPosition = new Vector(400, 400);
+					bulletMover = BulletMoverManager.CreateBulletMover(bulletPosition, parser.tree);
+				}
+			}
+
+			BulletMoverManager.Update(gameTime);
+			BulletMoverManager.FreeBulletMovers();
+		}
+
+		private void CreateRandomEnemy()
+		{
+			if (enemies.Count < 500)
+			{
+				int randomX = random.Next(0, 1200);
+				int randomY = random.Next(100, 700);
+				Vector randomPosition = new Vector(randomX, randomY);
+				Icon iconEnemy = ControlFactory.CreateIcon(ContentManager, "Enemy");
+				Enemy newEnemy = new Enemy(new Vector(400, 400), iconEnemy);
+				newEnemy.TeleportTo(randomPosition);
+				enemies.Add(newEnemy);
+			}
+		}
+
+		private void DisposeDeadBullets(List<Bullet> deadBullets)
+		{
+			foreach (var deadBullet in deadBullets)
+			{
+				playerBullets.RemoveAll(pb => pb.ID == deadBullet.ID);
+				deadBullet.Dispose();
+			}
+		}
+
+		private static void MarkDeadBullets(List<Bullet> deadBullets, Bullet playerBullet)
+		{
+			if (playerBullet.Position.Y <= 59)
+			{
+				playerBullet.Die();
+				deadBullets.Add(playerBullet);
+			}
+		}
+
+		private void UpdatePlayer()
+		{
+			float angle = (float)Math.Atan2((double)(mousePosition.Y - player.Position.Y), (double)(mousePosition.X - player.Position.X));
+			angle = MathExtensions.ToDegrees(angle);
 			angle -= 45;
+			player.RotateTo(angle);
 		}
 
 		public override void Dispose()
