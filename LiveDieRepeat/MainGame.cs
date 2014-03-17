@@ -14,6 +14,7 @@ namespace LiveDieRepeat
 	{
 		public static readonly int SCREEN_WIDTH_LOGICAL = 1280;
 		public static readonly int SCREEN_HEIGHT_LOGICAL = 720;
+		public static Rectangle Viewport;
 
 		private bool isMouseInsideWindowBounds = true;
 		private bool isWindowFocused = true;
@@ -49,6 +50,7 @@ namespace LiveDieRepeat
 			CreateWindow("Live. Die. Repeat.", 100, 100, SCREEN_WIDTH_LOGICAL, SCREEN_HEIGHT_LOGICAL, WindowFlags.Shown);// | WindowFlags.GrabbedInputFocus);
 			CreateRenderer(RendererFlags.RendererAccelerated | RendererFlags.RendererPresentVSync | RendererFlags.SupportRenderTargets);
 			Renderer.SetRenderLogicalSize(SCREEN_WIDTH_LOGICAL, SCREEN_HEIGHT_LOGICAL);
+			Viewport = new Rectangle(0, 0, MainGame.SCREEN_WIDTH_LOGICAL, MainGame.SCREEN_HEIGHT_LOGICAL);
 			
 			contentManager = new ContentManager(Renderer);
 			screenManager = new ScreenManager(Renderer);

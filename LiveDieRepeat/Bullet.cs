@@ -1,4 +1,5 @@
-﻿using LiveDieRepeat.UserInterface;
+﻿using LiveDieRepeat.BulletSystem;
+using LiveDieRepeat.UserInterface;
 using SharpDL;
 using SharpDL.Graphics;
 using System;
@@ -85,7 +86,7 @@ namespace LiveDieRepeat
 		public void ResolveCollision(ICollidable collidable)
 		{
 			if (!IsDead)
-				if (collidable is Enemy)
+				if (collidable is BulletMover)
 					if (CollisionBox.Intersects(collidable.CollisionBox))
 						Die();
 		}

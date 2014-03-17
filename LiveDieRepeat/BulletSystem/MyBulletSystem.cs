@@ -22,9 +22,9 @@ namespace LiveDieRepeat.BulletSystem
 
         public float GetRank() { return 0; }
 
-        public float GetShipPosX() { return player.Position.X; } //自機の座標を返す
+        public float GetPlayerPositionX() { return player.Position.X; } //自機の座標を返す
 
-        public float GetShipPosY() { return player.Position.Y; } //自機の座標を返す
+        public float GetPlayerPositionY() { return player.Position.Y; } //自機の座標を返す
     }
 
 }

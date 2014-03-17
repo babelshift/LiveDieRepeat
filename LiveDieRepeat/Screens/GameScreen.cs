@@ -20,10 +20,12 @@ namespace LiveDieRepeat.Screens
 		private Random random = new Random();
 		private TimeSpan timeSinceLastPlayerBullet = TimeSpan.MaxValue;
 		private TimeSpan timeBetweenPlayerBullets = TimeSpan.FromSeconds(0.1);
-		private bool isLeftMouseButtonDown = false;
-		private BulletMLParser parser;
+
 		private int bulletTimer = 0;
+		private BulletMLParser parser;
 		private BulletMover bulletMover;
+		private BulletMoverManager bulletMoverManager;
+		private Vector bulletEmitterPosition = new Vector(MainGame.SCREEN_WIDTH_LOGICAL / 2, 80);
 
 		private Icon gameBoard;
 		private Texture textureBackgroundTile;
@@ -44,6 +46,11 @@ namespace LiveDieRepeat.Screens
 
 		private List<Enemy> enemies = new List<Enemy>();
 		private List<Bullet> playerBullets = new List<Bullet>();
+
+		private bool isArrowLeftDown = false;
+		private bool isArrowRightDown = false;
+		private bool isLeftMouseButtonDown = false;
+		private bool isSpacebarDown = false;
 
 		public GameScreen(ContentManager contentManager)
 			: base(contentManager)
@@ -73,11 +80,11 @@ namespace LiveDieRepeat.Screens
 			scoreValue.Position = metricScore.Position + new Vector(metricScore.Width - scoreValue.Width - 10, 4);
 
 			centerRing = ControlFactory.CreateIcon(ContentManager, "CenterRing");
-			centerRing.Position = new Vector(MainGame.SCREEN_WIDTH_LOGICAL / 2 - centerRing.Width / 2, MainGame.SCREEN_HEIGHT_LOGICAL / 2 - centerRing.Height / 2);
+			centerRing.Position = new Vector(MainGame.SCREEN_WIDTH_LOGICAL / 2 - centerRing.Width / 2, MainGame.SCREEN_HEIGHT_LOGICAL - centerRing.Height / 2);
 
 			Icon iconPlayer = ControlFactory.CreateIcon(ContentManager, "Player");
 			player = new Player(iconPlayer);
-			player.TeleportTo(new Vector(MainGame.SCREEN_WIDTH_LOGICAL / 2, MainGame.SCREEN_HEIGHT_LOGICAL / 2));
+			player.TeleportTo(new Vector(MainGame.SCREEN_WIDTH_LOGICAL / 2, MainGame.SCREEN_HEIGHT_LOGICAL));
 
 			textureBackgroundTile = ContentManager.GetTexture("SplashBackgroundTile");
 
@@ -90,13 +97,13 @@ namespace LiveDieRepeat.Screens
 			Controls.Add(scoreValue);
 			Controls.Add(centerRing);
 
-			parser = new BulletMLParser();
-			parser.ParseXML(String.Format(@"Content\BulletPatterns\{0}", "Struggling.xml"));
+			bulletMoverManager = new BulletMoverManager(ContentManager);
 			BulletMLManager.Init(new MyBulletSystem(player));
-			BulletMoverManager.Init(ContentManager);
 
-			Vector bulletPosition = new Vector(400, 400);
-			bulletMover = BulletMoverManager.CreateBulletMover(bulletPosition, parser.tree);
+			parser = new BulletMLParser();
+			parser.ParseXML(String.Format(@"Content\BulletPatterns\{0}", "ExplodeShot.xml"));
+
+			bulletMover = bulletMoverManager.CreateBulletMover(bulletEmitterPosition, parser.tree);
 		}
 
 		public override void Update(GameTime gameTime, bool otherWindowHasFocus, bool coveredByOtherScreen)
@@ -124,6 +131,26 @@ namespace LiveDieRepeat.Screens
 			RemoveExpiredAgents();
 		}
 
+		private void MovePlayer()
+		{
+			if (isArrowLeftDown)
+			{
+				if (player.Position.X >= 0)
+				{
+					centerRing.Position = centerRing.Position - new Vector(10, 0);
+					player.TeleportTo(player.Position - new Vector(10, 0));
+				}
+			}
+			else if (isArrowRightDown)
+			{
+				if (player.Position.X <= MainGame.SCREEN_WIDTH_LOGICAL)
+				{
+					centerRing.Position = centerRing.Position + new Vector(10, 0);
+					player.TeleportTo(player.Position + new Vector(10, 0));
+				}
+			}
+		}
+
 		public override void Draw(GameTime gameTime, Renderer renderer)
 		{
 			for (int x = -1; x <= MainGame.SCREEN_WIDTH_LOGICAL / textureBackgroundTile.Width; x++)
@@ -140,8 +167,7 @@ namespace LiveDieRepeat.Screens
 			foreach (var playerBullet in playerBullets)
 				playerBullet.Draw(gameTime, renderer);
 
-			foreach (var bulletMover in BulletMoverManager.BulletMovers)
-				bulletMover.Draw(gameTime, renderer);
+			bulletMoverManager.Draw(gameTime, renderer);
 		}
 
 		public override void HandleMouseMovingEvent(object sender, MouseMotionEventArgs e)
@@ -167,6 +193,35 @@ namespace LiveDieRepeat.Screens
 				isLeftMouseButtonDown = false;
 		}
 
+		public override void HandleKeyPressedEvent(object sender, KeyboardEventArgs e)
+		{
+			base.HandleKeyPressedEvent(sender, e);
+
+			var keyPressed = e.KeyInformation.VirtualKey;
+
+			if (keyPressed == SharpDL.Input.VirtualKeyCode.ArrowLeft)
+				isArrowLeftDown = true;
+			else if (keyPressed == SharpDL.Input.VirtualKeyCode.ArrowRight)
+				isArrowRightDown = true;
+
+			if (keyPressed == SharpDL.Input.VirtualKeyCode.Space)
+				isSpacebarDown = true;
+		}
+
+		public override void HandleKeyReleasedEvent(object sender, KeyboardEventArgs e)
+		{
+			base.HandleKeyReleasedEvent(sender, e);
+
+			var keyReleased = e.KeyInformation.VirtualKey;
+
+			if (keyReleased == SharpDL.Input.VirtualKeyCode.ArrowLeft)
+				isArrowLeftDown = false;
+			if (keyReleased == SharpDL.Input.VirtualKeyCode.ArrowRight)
+				isArrowRightDown = false;
+			if (keyReleased == SharpDL.Input.VirtualKeyCode.Space)
+				isSpacebarDown = false;
+		}
+
 		public void ShootPlayerBullet(GameTime gameTime)
 		{
 			if (timeSinceLastPlayerBullet < TimeSpan.MaxValue)
@@ -174,7 +229,7 @@ namespace LiveDieRepeat.Screens
 
 			if (timeSinceLastPlayerBullet >= timeBetweenPlayerBullets)
 			{
-				if (isLeftMouseButtonDown)
+				if (isLeftMouseButtonDown || isSpacebarDown)
 				{
 					Bullet bullet = player.FireWeapon(ContentManager);
 					playerBullets.Add(bullet);
@@ -200,7 +255,7 @@ namespace LiveDieRepeat.Screens
 
 		private void UpdateCollisions()
 		{
-			CollisionManager.HandleCollisions(enemies, playerBullets);
+			CollisionManager.HandleCollisions(bulletMoverManager.Emitters, playerBullets);
 		}
 
 		private void UpdatePlayerBullets(GameTime gameTime)
@@ -213,7 +268,6 @@ namespace LiveDieRepeat.Screens
 		{
 			foreach (var enemy in enemies)
 				enemy.Update(gameTime);
-
 		}
 
 		private void UpdateBullets(GameTime gameTime)
@@ -223,16 +277,10 @@ namespace LiveDieRepeat.Screens
 			{
 				bulletTimer = 0;
 				bulletMover.IsUsed = false;
-
-				if (bulletMover.IsUsed == false)
-				{
-					Vector bulletPosition = new Vector(400, 400);
-					bulletMover = BulletMoverManager.CreateBulletMover(bulletPosition, parser.tree);
-				}
+				bulletMover = bulletMoverManager.CreateBulletMover(bulletEmitterPosition, parser.tree);
 			}
 
-			BulletMoverManager.Update(gameTime);
-			BulletMoverManager.FreeBulletMovers();
+			bulletMoverManager.Update(gameTime);
 		}
 
 		private void CreateRandomEnemy()
@@ -269,7 +317,9 @@ namespace LiveDieRepeat.Screens
 
 		private void UpdatePlayer()
 		{
-			float angle = (float)Math.Atan2((double)(mousePosition.Y - player.Position.Y), (double)(mousePosition.X - player.Position.X));
+			MovePlayer();
+
+			float angle = (float)Math.Atan2((double)((player.Position.Y - 10) - player.Position.Y), (double)(player.Position.X - player.Position.X));
 			angle = MathExtensions.ToDegrees(angle);
 			angle -= 45;
 			player.RotateTo(angle);

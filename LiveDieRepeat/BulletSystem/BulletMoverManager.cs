@@ -12,59 +12,71 @@ namespace LiveDieRepeat.BulletSystem
 {
 	public class BulletMoverManager
 	{
-		private static ContentManager contentManager;
+		private ContentManager contentManager;
 
-		//todo: should this really be static?
-		public static List<BulletMover> BulletMovers = new List<BulletMover>(); //Emitterのリスト
+		private List<BulletMover> emitters = new List<BulletMover>();
 
-		public static void Init(ContentManager contentManagerRef)
+		public IReadOnlyList<BulletMover> Emitters { get { return emitters; } }
+
+		public BulletMoverManager(ContentManager contentManager)
 		{
-			contentManager = contentManagerRef;
+			this.contentManager = contentManager;
 		}
 
 		/// <summary>
-		/// 新しいEmitterを作成
+		/// Creating a new Emitter
 		/// </summary>
-		static public BulletMover CreateBulletMover(Vector position, BulletMLLib.BulletMLTree tree)
+		public BulletMover CreateBulletMover(Vector position, BulletMLLib.BulletMLTree tree)
 		{
-			BulletMover BulletMover = CreateBulletMover();
-			BulletMover.Position = position;
-			BulletMover.SetBullet(tree);
-			return BulletMover;
+			BulletMover newBulletMover = CreateBulletMover();
+			newBulletMover.Position = position;
+			newBulletMover.SetBullet(tree);
+			return newBulletMover;
 		}
 
-		static public BulletMover CreateBulletMover()
+		public BulletMover CreateBulletMover()
 		{
-			Icon iconBullet = ControlFactory.CreateIcon(contentManager, "PlayerBullet");
-			BulletMover BulletMover = new BulletMover();
-			BulletMovers.Add(BulletMover); //Emitterを登録
-			BulletMover.Init(iconBullet); //初期化
-			return BulletMover;
+			Icon iconBullet = ControlFactory.CreateIcon(contentManager, "Square");
+			BulletMover newBulletMover = new BulletMover();
+			emitters.Add(newBulletMover);
+			newBulletMover.Init(this, iconBullet);
+			return newBulletMover;
 		}
 
 		/// <summary>
-		/// すべてのEmitterの行動を実行する
+		/// Update all Emitters
 		/// </summary>
-		static public void Update(GameTime gameTime)
+		public void Update(GameTime gameTime)
 		{
-			for(int i = 0; i < BulletMovers.Count; i++)
-				BulletMovers[i].Update(gameTime);
+			for (int i = 0; i < emitters.Count; i++)
+				emitters[i].Update(gameTime);
+
+			FreeBulletMovers();
+		}
+
+		public void Draw(GameTime gameTime, Renderer renderer)
+		{
+			foreach (var emitter in emitters)
+				emitter.Draw(gameTime, renderer);
 		}
 
 		/// <summary>
 		/// Used when we need to quickly delete all bullets (usually when the screen is exiting or a level reset occurs)
 		/// </summary>
-		static public void ClearBulletMovers()
+		public void ClearBulletMovers()
 		{
-			BulletMovers.Clear();
+			emitters.Clear();
 		}
 
 		/// <summary>
 		/// Get rid of all bullet movers that are no longer used
 		/// </summary>
-		static public void FreeBulletMovers()
+		private void FreeBulletMovers()
 		{
-			BulletMovers.RemoveAll(bm => !bm.IsUsed);
+			foreach (var emitter in emitters)
+				if (!emitter.IsUsed)
+					emitter.Dispose();
+			emitters.RemoveAll(bm => !bm.IsUsed);
 		}
 	}
 }

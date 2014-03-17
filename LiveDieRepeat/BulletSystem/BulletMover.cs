@@ -10,36 +10,33 @@ using System.Threading.Tasks;
 
 namespace LiveDieRepeat.BulletSystem
 {
-	public class BulletMover : IBulletMLBulletInterface, ICollidable
+	public class BulletMover : IBulletMLBulletInterface, ICollidable, IDisposable
 	{
-		public BulletMLBullet mlBullet;
-		private bool used;
-		public bool bulletRoot;
+		private BulletMoverManager myManager;
 		private Vector pos;
 		private Icon icon;
 		private List<ICollidable> collidableComponents = new List<ICollidable>();
-
-		public bool IsUsed
-		{
-			get { return used; }
-			set { used = value; }
-		}
-
-		public Vector Position
-		{
-			get { return this.pos; }
-			set 
-			{ 
-				this.pos = value;
-				icon.Position = this.pos;
-			}
-		}
 
 		public virtual IReadOnlyList<ICollidable> CollidableComponents { get { return collidableComponents; } }
 
 		public Rectangle CollisionBox { get { return icon.Bounds; } }
 
-		// 座標、向き、速度のプロパティを実装します。
+		public bool IsBulletRoot { get; set; }
+
+		public BulletMLBullet MLBullet { get; set; }
+
+		public bool IsUsed { get; set; }
+
+		public Vector Position
+		{
+			get { return this.pos; }
+			set
+			{
+				this.pos = value;
+				icon.Position = this.pos;
+			}
+		}
+
 		public float X
 		{
 			get { return pos.X; }
@@ -64,59 +61,76 @@ namespace LiveDieRepeat.BulletSystem
 
 		public float Speed { get; set; }
 
-		public void ResolveCollision(ICollidable collidableEntity)
+		public void Init(BulletMoverManager myManager, Icon icon)
 		{
-			IsUsed = false;
-		}
-
-		public void Init(Icon icon)
-		{
+			this.myManager = myManager;
 			this.icon = icon;
 			IsUsed = true;
-			bulletRoot = false;
-			mlBullet = new BulletMLBullet(this);
+			IsBulletRoot = false;
+			MLBullet = new BulletMLBullet(this);
 			//collidableComponents.Add(this);
 		}
 
 		public void Update(GameTime gameTime)
 		{
+			angle += 5;
 			icon.Update(gameTime);
 
 			//BulletMLで自分を動かす
-			if (mlBullet.Run()) //自分が弾の発信源なら、処理終了後に自動的に消える
-				if (bulletRoot)
+			if (MLBullet.Run()) //自分が弾の発信源なら、処理終了後に自動的に消える
+				if (IsBulletRoot)
 					IsUsed = false;
+
+			if (!MainGame.Viewport.Contains(Position))
+				IsUsed = false;
 		}
 
 		public void Draw(GameTime gameTime, Renderer renderer)
 		{
-			icon.Draw(gameTime, renderer);
+			icon.TextureFrame.Draw((int)icon.Position.X, (int)icon.Position.Y, angle, new Vector(icon.Width / 2, icon.Height / 2));
 		}
 
-		/// BulletMLの弾幕定義を自分にセット
+		private double angle = 0;
+
 		public void SetBullet(BulletMLTree tree)
 		{
-			mlBullet.InitTop(tree);
+			MLBullet.InitTop(tree);
 		}
 
-		///以下、BulletMLLibに必要なインターフェイスを実装します
-
 		/// <summary>
-		/// 新しい弾(Mover)を作成するときライブラリから呼ばれる
+		/// Called from BulletMLLib when a new bullet needs to be created in the tree
 		/// </summary>
 		public BulletMLBullet GetNewBullet()
 		{
-			bulletRoot = true;
-			BulletMover bulletMover = BulletMoverManager.CreateBulletMover();
-			return bulletMover.mlBullet;
+			IsBulletRoot = true;
+			BulletMover bulletMover = myManager.CreateBulletMover();
+			return bulletMover.MLBullet;
 		}
 
 		/// <summary>
-		/// 弾が消えたときにライブラリから呼び出される
+		/// Called from BulletMLLib when a bullet is gone and unused
 		/// </summary>
 		public void Vanish()
 		{
 			IsUsed = false;
+		}
+
+		public void ResolveCollision(ICollidable collidableEntity)
+		{
+			if(IsUsed)
+				if(collidableEntity is Bullet)
+					IsUsed = false;
+		}
+
+		public void Dispose()
+		{
+			Dispose(true);
+			GC.SuppressFinalize(this);
+		}
+
+		private void Dispose(bool disposing)
+		{
+			icon.Dispose();
 		}
 	}
 }
