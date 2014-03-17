@@ -13,6 +13,7 @@ namespace LiveDieRepeat
 	public class Player : Agent
 	{
 		private Icon icon;
+		private Icon iconCenterRing;
 		private double angle;
 
 		public Guid ID { get; private set; }
@@ -37,14 +38,16 @@ namespace LiveDieRepeat
 			}
 		}
 
-		public Player(Icon icon)
+		public Player(Icon icon, Icon iconCenterRing)
 		{
 			this.icon = icon;
+			this.iconCenterRing = iconCenterRing;
 			ID = Guid.NewGuid();
 		}
 
 		public override void Update(GameTime gameTime)
 		{
+			iconCenterRing.Update(gameTime);
 			icon.Update(gameTime);
 
 			RotateTo(angle + 3);
@@ -53,6 +56,7 @@ namespace LiveDieRepeat
 		public override void Draw(GameTime gameTime, Renderer renderer)
 		{
 			//Vector origin = new Vector(icon.Width / 2, icon.Height / 2);
+			iconCenterRing.Draw(gameTime, renderer);
 			icon.TextureFrame.Draw((int)icon.Position.X, (int)icon.Position.Y, angle, Vector.Zero);
 			//icon.Draw(gameTime, renderer);
 		}
@@ -77,6 +81,13 @@ namespace LiveDieRepeat
 			bullet.TeleportTo(new Vector(Position.X - bullet.Width / 2, Position.Y - bullet.Height / 2));
 			bullet.RotateTo(angle + 45);
 			return bullet;
+		}
+
+		public override void AdjustPosition(Vector adjust)
+		{
+			base.AdjustPosition(adjust);
+
+			iconCenterRing.Position += adjust;
 		}
 
 		public override void Dispose()

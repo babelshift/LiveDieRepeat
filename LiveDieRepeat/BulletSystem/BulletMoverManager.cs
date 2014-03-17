@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace LiveDieRepeat.BulletSystem
 {
-	public class BulletMoverManager
+	public class BulletMoverManager : IDisposable
 	{
 		private ContentManager contentManager;
 
@@ -63,7 +63,7 @@ namespace LiveDieRepeat.BulletSystem
 		/// <summary>
 		/// Used when we need to quickly delete all bullets (usually when the screen is exiting or a level reset occurs)
 		/// </summary>
-		public void ClearBulletMovers()
+		private void ClearBulletMovers()
 		{
 			emitters.Clear();
 		}
@@ -77,6 +77,18 @@ namespace LiveDieRepeat.BulletSystem
 				if (!emitter.IsUsed)
 					emitter.Dispose();
 			emitters.RemoveAll(bm => !bm.IsUsed);
+		}
+
+		public void Dispose()
+		{
+			Dispose(true);
+			GC.SuppressFinalize(this);
+		}
+
+		private void Dispose(bool disposing)
+		{
+			FreeBulletMovers();
+			ClearBulletMovers();
 		}
 	}
 }

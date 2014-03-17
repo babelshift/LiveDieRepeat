@@ -16,6 +16,11 @@ namespace LiveDieRepeat
 			protected set { position = value; }
 		}
 
+		public virtual void AdjustPosition(Vector adjust)
+		{
+			Position += adjust;
+		}
+
 		public void TeleportTo(Vector position)
 		{
 			Position = position;

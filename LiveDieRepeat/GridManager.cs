@@ -44,7 +44,7 @@ namespace LiveDieRepeat
 	{
 		private int columns;
 		private int rows;
-		private const int cellSize = 64;
+		private const int cellSize = 16;
 		private List<GridCell> cells;
 
 		/// <summary>
