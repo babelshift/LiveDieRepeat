@@ -20,9 +20,7 @@ namespace LiveDieRepeat.Screens
 
 		private int bulletTimer = 0;
 		private BulletMLParser parser;
-		private BulletMover bulletMover;
 		private BulletMoverManager bulletMoverManager;
-		private Vector bulletEmitterPosition = new Vector(MainGame.SCREEN_WIDTH_LOGICAL / 2, 80);
 
 		private Icon gameBoard;
 		private Texture textureBackgroundTile;
@@ -35,6 +33,8 @@ namespace LiveDieRepeat.Screens
 		private UserInterfaceManager userInterfaceManager;
 		private AgentManager agentManager;
 
+		private Opponent opponent;
+
 		public GameScreen(ContentManager contentManager)
 			: base(contentManager)
 		{
@@ -46,6 +46,7 @@ namespace LiveDieRepeat.Screens
 
 			userInterfaceManager = new UserInterfaceManager(ContentManager);
 			agentManager = new AgentManager(ContentManager);
+			agentManager.ScoreNeedsUpdate += agentManager_ScoreNeedsUpdate;
 
 			gameBoard = ControlFactory.CreateIcon(ContentManager, "InGameBoard");
 			gameBoard.Position = new Vector(0, 59);
@@ -59,7 +60,15 @@ namespace LiveDieRepeat.Screens
 			parser = new BulletMLParser();
 			parser.ParseXML(String.Format(@"Content\BulletPatterns\{0}", "[Psyvariar]_X-B_colony_shape_satellite.xml"));
 
-			bulletMover = bulletMoverManager.CreateBulletMover(bulletEmitterPosition, parser.tree);
+			Icon iconOpponent = ControlFactory.CreateIcon(ContentManager, "Enemy");
+			opponent = new Opponent(Vector.Zero, iconOpponent);
+			opponent.TeleportTo(new Vector(100, 100));
+			opponent.BulletMover = bulletMoverManager.CreateBulletMover(opponent.Position, parser.tree);
+		}
+
+		private void agentManager_ScoreNeedsUpdate(object sender, ScoreNeedsUpdateEventArgs e)
+		{
+			UpdateScore(e.DeadEnemyCount);
 		}
 
 		public override void Update(GameTime gameTime, bool otherWindowHasFocus, bool coveredByOtherScreen)
@@ -71,6 +80,8 @@ namespace LiveDieRepeat.Screens
 			userInterfaceManager.Update(gameTime, inGameTime);
 
 			agentManager.Update(gameTime, isArrowLeftDown, isArrowRightDown, isLeftMouseButtonDown, isSpacebarDown);
+
+			opponent.Update(gameTime);
 
 			UpdateBullets(gameTime);
 
@@ -87,6 +98,8 @@ namespace LiveDieRepeat.Screens
 
 			agentManager.Draw(gameTime, renderer);
 
+			opponent.Draw(gameTime, renderer);
+
 			bulletMoverManager.Draw(gameTime, renderer);
 
 			userInterfaceManager.Draw(gameTime, renderer);
@@ -96,7 +109,7 @@ namespace LiveDieRepeat.Screens
 		{
 			base.HandleMouseMovingEvent(sender, e);
 
-			mousePosition = new Vector(e.RelativeToWindowX, e.RelativeToWindowY);
+			//agentManager.HandleMouseMovingEvent(sender, e);
 		}
 
 		public override void HandleMouseButtonPressedEvent(object sender, MouseButtonEventArgs e)
@@ -152,7 +165,7 @@ namespace LiveDieRepeat.Screens
 
 		private void UpdateCollisions()
 		{
-			//CollisionManager.HandleCollisions(bulletMoverManager.Emitters, playerBullets);
+			CollisionManager.HandleCollisions(bulletMoverManager.Emitters, agentManager.PlayerBullets);
 		}
 
 		private void UpdateBullets(GameTime gameTime)
@@ -161,8 +174,8 @@ namespace LiveDieRepeat.Screens
 			if (bulletTimer > 60)
 			{
 				bulletTimer = 0;
-				bulletMover.IsUsed = false;
-				bulletMover = bulletMoverManager.CreateBulletMover(bulletEmitterPosition, parser.tree);
+				opponent.BulletMover.IsUsed = false;
+				opponent.BulletMover = bulletMoverManager.CreateBulletMover(opponent.Position, parser.tree);
 			}
 
 			bulletMoverManager.Update(gameTime);

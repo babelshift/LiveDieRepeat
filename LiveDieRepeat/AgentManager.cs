@@ -3,6 +3,7 @@ using LiveDieRepeat.BulletSystem;
 using LiveDieRepeat.Content;
 using LiveDieRepeat.UserInterface;
 using SharpDL;
+using SharpDL.Events;
 using SharpDL.Graphics;
 using System;
 using System.Collections.Generic;
@@ -12,6 +13,16 @@ using System.Threading.Tasks;
 
 namespace LiveDieRepeat
 {
+	public class ScoreNeedsUpdateEventArgs : EventArgs
+	{
+		public int DeadEnemyCount { get; private set; }
+
+		public ScoreNeedsUpdateEventArgs(int deadEnemyCount)
+		{
+			DeadEnemyCount = deadEnemyCount;
+		}
+	}
+
 	public class AgentManager : IDisposable
 	{
 		private Random random = new Random();
@@ -23,6 +34,10 @@ namespace LiveDieRepeat
 		private List<Bullet> playerBullets = new List<Bullet>();
 
 		private ContentManager contentManager;
+
+		public IReadOnlyList<Bullet> PlayerBullets { get { return playerBullets;}}
+
+		public event EventHandler<ScoreNeedsUpdateEventArgs> ScoreNeedsUpdate;
 
 		public AgentManager(ContentManager contentManager)
 		{
@@ -64,6 +79,16 @@ namespace LiveDieRepeat
 				playerBullet.Draw(gameTime, renderer);
 		}
 
+		public void HandleMouseMovingEvent(object sender, MouseMotionEventArgs e)
+		{
+			int x = e.RelativeToLastMotionEventX;
+
+			if (player.Position.X >= 0 && player.Position.X <= MainGame.SCREEN_WIDTH_LOGICAL)
+			{
+				player.AdjustPosition(new Vector(x, 0));
+			}
+		}
+
 		private void MovePlayer(bool isArrowLeftDown, bool isArrowRightDown)
 		{
 			if (isArrowLeftDown)
@@ -101,16 +126,16 @@ namespace LiveDieRepeat
 
 		private void CreateRandomEnemy()
 		{
-			if (enemies.Count < 500)
-			{
-				int randomX = random.Next(0, 1200);
-				int randomY = random.Next(100, 700);
-				Vector randomPosition = new Vector(randomX, randomY);
-				Icon iconEnemy = ControlFactory.CreateIcon(contentManager, "Enemy");
-				Enemy newEnemy = new Enemy(new Vector(400, 400), iconEnemy);
-				newEnemy.TeleportTo(randomPosition);
-				enemies.Add(newEnemy);
-			}
+			//if (enemies.Count < 500)
+			//{
+			//	int randomX = random.Next(0, 1200);
+			//	int randomY = random.Next(100, 700);
+			//	Vector randomPosition = new Vector(randomX, randomY);
+			//	Icon iconEnemy = ControlFactory.CreateIcon(contentManager, "Enemy");
+			//	Enemy newEnemy = new Enemy(new Vector(400, 400), iconEnemy);
+			//	newEnemy.TeleportTo(randomPosition);
+			//	enemies.Add(newEnemy);
+			//}
 		}
 
 		private void UpdatePlayer(bool isArrowLeftDown, bool isArrowRightDown)
@@ -145,7 +170,6 @@ namespace LiveDieRepeat
 		private void RemoveDeadAgents()
 		{
 			int deadEnemyCount = enemies.Count(e => e.IsDead);
-			UpdateScore(deadEnemyCount);
 
 			var deadPlayerBullets = playerBullets.Where(pb => pb.IsDead);
 			foreach (var deadPlayerBullet in deadPlayerBullets)
@@ -156,6 +180,9 @@ namespace LiveDieRepeat
 			foreach (var deadEnemy in deadEnemies)
 				deadEnemy.Dispose();
 			enemies.RemoveAll(e => e.IsDead);
+
+			if (ScoreNeedsUpdate != null)
+				ScoreNeedsUpdate(this, new ScoreNeedsUpdateEventArgs(deadEnemyCount));
 		}
 
 		public void Dispose()

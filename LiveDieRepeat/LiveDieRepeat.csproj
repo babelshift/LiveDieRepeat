@@ -80,6 +80,7 @@
     <Compile Include="ICollidable.cs" />
     <Compile Include="MainGame.cs" />
     <Compile Include="MathExtensions.cs" />
+    <Compile Include="Opponent.cs" />
     <Compile Include="Player.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -91,7 +92,7 @@
     <Compile Include="Screens\ScreenManager.cs" />
     <Compile Include="Screens\ScreenState.cs" />
     <Compile Include="Screens\SplashMenuScreen.cs" />
-    <Compile Include="UserInterfaceManager.cs" />
+    <Compile Include="UserInterface\UserInterfaceManager.cs" />
     <Compile Include="UserInterface\Button.cs" />
     <Compile Include="UserInterface\Control.cs" />
     <Compile Include="UserInterface\ControlFactory.cs" />

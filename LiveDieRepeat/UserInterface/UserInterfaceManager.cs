@@ -8,7 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace LiveDieRepeat
+namespace LiveDieRepeat.UserInterface
 {
 	public class UserInterfaceManager : IDisposable
 	{
