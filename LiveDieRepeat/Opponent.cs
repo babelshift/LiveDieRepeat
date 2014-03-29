@@ -12,6 +12,11 @@ namespace LiveDieRepeat
 {
 	public class Opponent : Agent
 	{
+		private Queue<int> path = new Queue<int>();
+		private List<Queue<int>> paths = new List<Queue<int>>();
+		private int moveDistanceX = 3;
+		private bool isMovingToNode = false;
+
 		private Icon icon;
 
 		public Guid ID { get; private set; }
@@ -35,28 +40,39 @@ namespace LiveDieRepeat
 			Speed = speed;
 			this.icon = icon;
 			ID = Guid.NewGuid();
-		}
 
-		int moveX = 3;
+			AddNodeToPathQueue(10);
+			AddNodeToPathQueue(100);
+		}
 
 		public override void Update(GameTime gameTime)
 		{
 			icon.Update(gameTime);
 
-			if (icon.Bounds.Right >= MainGame.SCREEN_WIDTH_LOGICAL)
-			{
-				moveX *= -1;
-				Position = new Vector(MainGame.SCREEN_WIDTH_LOGICAL - icon.Width - 1, Position.Y);
-			}
-			else if (Position.X <= 0)
-				moveX = 3;
+			//if (icon.Bounds.Right >= MainGame.SCREEN_WIDTH_LOGICAL)
+			//{
+			//	moveDistanceX *= -1;
+			//	Position = new Vector(MainGame.SCREEN_WIDTH_LOGICAL - icon.Width - 1, Position.Y);
+			//}
+			//else if (Position.X <= 0)
+			//	moveDistanceX = 3;
 
-			Position += new Vector(moveX, 0);
+			Position += new Vector(moveDistanceX, 0);
 		}
 
 		public override void Draw(GameTime gameTime, Renderer renderer)
 		{
 			icon.Draw(gameTime, renderer);
+		}
+
+		private void AddNodeToPathQueue(int coordinateX)
+		{
+			path.Enqueue(coordinateX);
+		}
+
+		private int GetNextPathNode()
+		{
+			return path.Dequeue();
 		}
 
 		public override void Dispose()
