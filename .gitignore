@@ -215,3 +215,4 @@ pip-log.txt
 .mr.developer.cfg
 
 obj/
+/.vs/LiveDieRepeat/DesignTimeBuild/.dtbcache.v2

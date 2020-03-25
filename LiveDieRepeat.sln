@@ -1,7 +1,9 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2012
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LiveDieRepeat", "LiveDieRepeat\LiveDieRepeat.csproj", "{455CFFEA-9D11-4F0E-B12B-2C0E8C27E19B}"
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29920.165
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LiveDieRepeat", "LiveDieRepeat\LiveDieRepeat.csproj", "{7DF27A06-CEF2-4EFB-A9F2-69D10D135C32}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -9,12 +11,15 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{455CFFEA-9D11-4F0E-B12B-2C0E8C27E19B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{455CFFEA-9D11-4F0E-B12B-2C0E8C27E19B}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{455CFFEA-9D11-4F0E-B12B-2C0E8C27E19B}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{455CFFEA-9D11-4F0E-B12B-2C0E8C27E19B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7DF27A06-CEF2-4EFB-A9F2-69D10D135C32}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7DF27A06-CEF2-4EFB-A9F2-69D10D135C32}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7DF27A06-CEF2-4EFB-A9F2-69D10D135C32}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7DF27A06-CEF2-4EFB-A9F2-69D10D135C32}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {558AC64E-C890-4928-BC89-77008EE69F4A}
 	EndGlobalSection
 EndGlobal
