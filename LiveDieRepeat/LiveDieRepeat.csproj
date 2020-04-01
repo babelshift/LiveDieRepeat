@@ -9,7 +9,8 @@
   <ItemGroup>
     <PackageReference Include="BulletMLLib.Classic" Version="1.0.0" />
     <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
-    <PackageReference Include="SharpDL" Version="2.0.1" />
+    <PackageReference Include="SharpDL" Version="2.0.7" />
+    <PackageReference Include="SharpTiles" Version="1.0.3" />
   </ItemGroup>
 
 </Project>
